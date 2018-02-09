@@ -1,0 +1,6 @@
+<launch>
+	<node name="gripper_handler" pkg="rosserial_python" type="serial_node.py"  output="screen">
+		<param name="port" value="/dev/ttyACM0"/>
+	</node>
+	<node name="gripper_parameter" pkg="gripper_ur5" type="main"/>
+</launch>

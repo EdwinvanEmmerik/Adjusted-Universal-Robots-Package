@@ -1,0 +1,10 @@
+<launch>
+	<!-- Start the service up first -->
+	<node name="move_service" pkg="ur_kinematics" type="ur5_PAP_service" output="screen"
+	launch-prefix="xterm -e"/>
+	<!-- Start the client then here 
+	<node name="move_client" pkg="ur_kinematics" type="ur5_PAP_client" output="screen"
+	launch-prefix="xterm -e"/>  -->
+	<!-- -->
+	<node name="move_client" pkg="ur_kinematics" type="ur5_client_test" output="screen" launch-prefix="xterm -e"/>
+</launch>

@@ -1,0 +1,62 @@
+ur5_moveit_config/launch/moveit.rviz changed line 59-67:
+      MoveIt_Workspace:
+        Center:
+          X: 0
+          Y: 0
+          Z: 0
+        Size:
+          X: 2
+          Y: 2
+          Z: 2
+to
+      MoveIt_Workspace:
+        Center:
+          X: 005
+          Y: 0.5
+          Z: 0.5
+        Size:
+          X: 1.5
+          Y: 1.5
+          Z: 1
+ur5_moveit_config/move_group.launch line 53
+move_group/MoveGroupExecuteService
+to
+move_group/MoveGroupExecuteTrajectoryAction
+
+ur5_moveit_config/launch/moveit.rviz changed line 157
+        Show Workspace: false
+to
+        Show Workspace: true
+ur5_moveit_config/move_group.launch line 70
+-
+to
+  <!-- Load the workspace environment into the planning scene -->
+  <node name="ur5_workspace_loader" pkg="ur_kinematics" type="ur5_workspace_test" output="screen"/>
+          
+ur5_moveit_config/launch/moveit.rviz changed line 229
+-
+to
+	kinect_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+also line 238
+-
+to
+    - Class: rviz/Camera
+      Enabled: true
+      Image Rendering: background and overlay
+      Image Topic: /rrbot/camera1/image_raw
+      Name: Camera
+      Overlay Alpha: 0.5
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+      Visibility:
+        Grid: true
+        LaserScan: true
+        RobotModel: true
+        Value: true
+      Zoom Factor: 1

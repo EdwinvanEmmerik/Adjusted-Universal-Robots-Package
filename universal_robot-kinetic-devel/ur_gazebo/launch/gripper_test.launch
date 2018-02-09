@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- startup simulated world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" default="worlds/empty.world"/>
+  </include>
+   <!-- send robot urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find ur_description)/urdf/gripper.urdf.xacro" />
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model ur5" respawn="false" output="screen" />
+</launch>

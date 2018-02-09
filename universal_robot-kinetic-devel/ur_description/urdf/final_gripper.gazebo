@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+	<!--
+ 	<gazebo>
+    	<plugin name="ros_control" filename="libgazebo_ros_control.so">
+      		<robotNamespace>/</robotNamespace>
+      		<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    	</plugin>
+	</gazebo>-->
+
+  	<gazebo reference="body_link">
+    	<mu1>0.2</mu1>
+   		<mu2>0.2</mu2>
+    	<material>Gazebo/black</material>
+  	</gazebo>
+    <gazebo reference="dynamixel_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+<!-- 
+    <gazebo reference="plate_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="driver_arm_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="left_arm_front_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="left_arm_back_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="left_finger_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="driven_arm_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="right_arm_front_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="right_arm_back_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+    <gazebo reference="right_finger_link">
+      <mu1>0.2</mu1>
+      <mu2>0.2</mu2>
+      <material>Gazebo/black</material>
+    </gazebo>
+ -->
+</robot>

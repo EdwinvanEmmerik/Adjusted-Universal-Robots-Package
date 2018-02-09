@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot>
+<!-- Kinect -->
+  <gazebo reference="kinect_link">
+    <sensor type="depth" name="kinect">
+        <always_on>1</always_on>
+        <visualize>true</visualize>             
+        <camera>
+            <horizontal_fov>1.047</horizontal_fov>  
+            <image>
+                <width>640</width>
+                <height>480</height>
+                <format>R8G8B8</format>
+            </image>
+            <depth_camera>
+
+            </depth_camera>
+            <clip>
+                <near>0.2</near>
+                <far>2.5</far>
+            </clip>
+        </camera>
+             <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
+             <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>kinect</cameraName>
+                <frameName>kinect_depth_optical_frame</frameName>                   
+            <imageTopicName>/kinect/rgb/image_raw</imageTopicName>
+            <depthImageTopicName>/kinect/depth/image_raw</depthImageTopicName>
+            <pointCloudTopicName>/kinect/depth/points</pointCloudTopicName>
+            <cameraInfoTopicName>/kinect/rgb/camera_info</cameraInfoTopicName>              
+            <depthImageCameraInfoTopicName>/kinect/depth/camera_info</depthImageCameraInfoTopicName>            
+            <pointCloudCutoff>0.5</pointCloudCutoff>                
+                <hackBaseline>0.0</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            <CxPrime>0.0</CxPrime>
+            <Cx>0.0</Cx>
+            <Cy>0.0</Cy>
+            <focalLength>0.0</focalLength>
+            </plugin>
+    </sensor>
+  </gazebo>
+</robot>

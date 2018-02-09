@@ -1,0 +1,440 @@
+<?xml version="1.0"?>
+<!-- THE BACK FOLLOWER LINKS GIVE ERRORS DUE TO TRANSFORM CACHE NOT BEING UPDATED. COMMENTED OUT FOR NOW -->
+
+<!-- Initialize robot -->
+<robot name="ur5" xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<!-- Not needed but looks cool-->
+	<xacro:include filename="$(find ur_description)/urdf/final_gripper.gazebo"/>
+
+	<!-- Properties -->
+	<xacro:property name="body_depth" value="-0.00725"/>
+
+	<xacro:property name="dynamixel_depth_x" value="0.02"/>
+	<xacro:property name="dynamixel_depth_y" value="0.0645"/>
+	<xacro:property name="dynamixel_depth_z" value="0.00865"/>
+
+	<xacro:property name="driver_arm_joint_x" value="0.02"/>
+	<xacro:property name="driver_arm_joint_y" value="0.0871"/>
+	<xacro:property name="driver_arm_joint_z" value="0.00868"/>
+
+	<xacro:property name="front_left_follower_joint_x" value="0.02"/>
+	<xacro:property name="front_left_follower_joint_y" value="0.0769"/>
+	<xacro:property name="front_left_follower_joint_z" value="0.0422"/>
+
+	<xacro:property name="back_left_follower_joint_x" value="-0.01"/>
+	<xacro:property name="back_left_follower_joint_y" value="0.0769"/>
+	<xacro:property name="back_left_follower_joint_z" value="0.0422"/>
+
+	<xacro:property name="left_finger_joint_x" value="-0.01"/>
+	<xacro:property name="left_finger_joint_y" value="0.05"/>
+	<xacro:property name="left_finger_joint_z" value="0.0"/>
+
+	<xacro:property name="driven_arm_joint_x" value="0.02"/>
+	<xacro:property name="driven_arm_joint_y" value="0.0871"/>
+	<xacro:property name="driven_arm_joint_z" value="-0.00865"/>
+
+	<xacro:property name="front_right_follower_joint_x" value="0.01"/>
+	<xacro:property name="front_right_follower_joint_y" value="0.0769"/>
+	<xacro:property name="front_right_follower_joint_z" value="-0.0422"/>
+
+	<xacro:property name="back_right_follower_joint_x" value="-0.02"/>
+	<xacro:property name="back_right_follower_joint_y" value="0.0769"/>
+	<xacro:property name="back_right_follower_joint_z" value="-0.0422"/>
+
+	<xacro:property name="right_finger_joint_x" value="-0.03"/>
+	<xacro:property name="right_finger_joint_y" value="0.05"/>
+	<xacro:property name="right_finger_joint_z" value="0.0"/>
+
+
+
+
+	<!-- <xacro:property name="" value=""/> -->
+
+
+<!-- Body -->
+
+	<!-- Body joint -->
+	<joint name="body_joint" type="fixed">
+		<axis xyz ="0 0 0"/>
+		<!-- <origin xyz="${body_depth} 0 0" rpy="0 0 ${-pi/2}"/> -->
+		<origin xyz="${body_depth} 0 0" rpy="0 ${-pi/2} ${-pi/2}"/>
+		<parent link="ee_link"/>
+		<child link="body_link"/>
+	</joint>
+
+	<!-- Body link -->
+	<link name="body_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/body.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/body.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.006015" ixy="0.00001053" ixz="0.00000106" iyy="0.001633" iyz="0.00008978" izz="0.00001619"/>
+		</inertial>
+	</link>
+
+	<!-- Dynamixel joint -->
+	<joint name="dynamixel_joint" type="fixed">
+		<axis xyz="0 0 0"/>
+		<origin xyz="${dynamixel_depth_x} ${dynamixel_depth_y} ${dynamixel_depth_z}" rpy="0 0 0"/>
+		<parent link="body_link"/>
+		<child link="dynamixel_link"/>
+	</joint>
+
+	<!-- Dynamixel link -->
+	<link name="dynamixel_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/dynamixel.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/dynamixel.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.05"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.0001" ixy="0.0001" ixz="0.0001" iyy="0.0001" iyz="0.0001" izz="0.0001"/>
+		</inertial>
+	</link>
+
+	<!-- Dynamixel gear joint -->
+	<joint name="dynamixel_gear_joint" type="revolute">
+		<axis xyz="-1 0 0"/>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="dynamixel_link"/>
+		<child link="dynamixel_gear_link"/>
+		<limit lower="${-pi}" upper="${pi}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+	</joint>
+
+	<!-- Dynamixel gear link -->
+	<link name="dynamixel_gear_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/dynamixel_gear.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/dynamixel_gear.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.000004" ixy="0" ixz="0" iyy="0.00000331" iyz="0" izz="0.00000331"/>
+		</inertial>
+	</link>
+<!-- Driver and Driven arm -->
+
+	<!-- Driver arm joint -->
+	<joint name="driver_arm_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${driver_arm_joint_x} ${driver_arm_joint_y} ${driver_arm_joint_z}" rpy="0 0 0"/>
+		<parent link="body_link"/>
+		<child link="driver_arm_link"/>
+		<limit lower="${-pi}" upper="${pi}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="dynamixel_gear_joint" multiplier="${32/20}"/>
+	</joint>
+
+	<!-- Driver arm link -->
+	<link name="driver_arm_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/driver_arm.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/driver_arm.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.00004323" ixy="0.000005656" ixz="0.000002244" iyy="0.000007368" iyz="-0.00001019" izz="0.00003908"/>
+		</inertial>
+	</link>
+
+	<!-- Driven arm joint -->
+	<joint name="driven_arm_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${driven_arm_joint_x} ${driven_arm_joint_y} ${driven_arm_joint_z}" rpy="0 0 0"/>
+		<parent link="body_link"/>
+		<child link="driven_arm_link"/>
+		<limit lower="${-pi}" upper="${pi}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="dynamixel_gear_joint" multiplier="${-32/20}"/>
+	</joint>
+
+	<!-- Driven arm link -->
+	<link name="driven_arm_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/driven_arm.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/driven_arm.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.00003786" ixy="0.000005252" ixz="0" iyy="0.000002615" iyz="0" izz="0.00003911"/>
+		</inertial>
+	</link>
+
+<!-- LEFT -->
+
+	<!-- Follower joint front left -->
+	<joint name="front_left_follower_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${front_left_follower_joint_x} ${front_left_follower_joint_y} ${front_left_follower_joint_z}" rpy="${-pi/76} 0 0"/>
+		<parent link="body_link"/>
+		<child link="front_left_follower_link"/>
+		<limit lower="${-pi/2}" upper="${pi/2}" effort="10.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="driver_arm_joint" multiplier="1"/>
+	</joint>
+
+	<!-- Follower link front left -->
+	<link name="front_left_follower_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/follower.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/follower.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001"/>
+		</inertial>
+	</link>
+
+<!-- Follower joint back left -->
+	<joint name="back_left_follower_joint" type="fixed">
+		<axis xyz="0 0 0"/>
+		<origin xyz="${back_left_follower_joint_x} ${back_left_follower_joint_y} ${back_left_follower_joint_z}" rpy="${-pi/76} 0 0"/>
+		<parent link="body_link"/>
+		<child link="back_left_follower_link"/>
+		<!-- <limit lower="${-pi/2}" upper="${pi/2}" effort="100.0" velocity="1.0"/> -->
+		<!-- <dynamics damping="0.0" friction="0.001"/> -->
+		<!-- <mimic joint="driver_arm_joint" multiplier="1"/> -->
+	</joint>
+
+	<!-- Follower link back left -->
+	<link name="back_left_follower_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/follower.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/follower.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<!-- Finger joint left -->
+	<joint name="left_finger_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${left_finger_joint_x} ${left_finger_joint_y} ${left_finger_joint_z}" rpy="0 0 0"/>
+		<parent link="driver_arm_link"/>
+		<child link="left_finger_link"/>
+		<limit lower="${-pi/2}" upper="${pi/2}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="driver_arm_joint" multiplier="-1"/>
+	</joint>
+
+	<!-- Finger link left -->
+	<link name="left_finger_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/finger.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/finger.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.00008297" ixy="0.000008364" ixz="0.00001782" iyy="0.00006509" iyz="0.000008543" izz="0.00006196"/>
+		</inertial>
+	</link>
+<!-- Right -->
+
+	<!-- Follower joint front right -->
+	<joint name="front_right_follower_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${front_right_follower_joint_x} ${front_right_follower_joint_y} ${front_right_follower_joint_z}" rpy="${pi-pi/76} 0 ${pi}"/>
+		<parent link="body_link"/>
+		<child link="front_right_follower_link"/>
+		<limit lower="${-pi/2}" upper="${pi/2}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="driver_arm_joint" multiplier="1"/>
+	</joint>
+
+	<!-- Follower link front right -->
+	<link name="front_right_follower_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/follower.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/follower.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<!-- Follower joint back right -->
+	<joint name="back_right_follower_joint" type="fixed">
+		<axis xyz="0 0 0"/>
+		<origin xyz="${back_right_follower_joint_x} ${back_right_follower_joint_y} ${back_right_follower_joint_z}" rpy="${pi-pi/76} 0 ${pi}"/>
+		<parent link="body_link"/>
+		<child link="back_right_follower_link"/>
+		<!-- <limit lower="${-pi/2}" upper="${pi/2}" effort="100.0" velocity="1.0"/> -->
+		<!-- <dynamics damping="0.0" friction="0.001"/> -->
+		<!-- <mimic joint="driver_arm_joint" multiplier="1"/> -->
+	</joint>
+
+	<!-- Follower link front right -->
+	<link name="back_right_follower_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/follower.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/follower.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001"/>
+		</inertial>
+	</link>
+
+	<!-- Finger joint right -->
+	<joint name="right_finger_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<origin xyz="${right_finger_joint_x} ${right_finger_joint_y} ${right_finger_joint_z}" rpy="${pi} 0 ${pi}"/>
+		<parent link="driven_arm_link"/>
+		<child link="right_finger_link"/>
+		<limit lower="${-pi/2}" upper="${pi/2}" effort="100.0" velocity="1.0"/>
+		<dynamics damping="0.0" friction="0.001"/>
+		<mimic joint="driven_arm_joint" multiplier="1"/>
+	</joint>
+
+	<!-- Finger link right -->
+	<link name="right_finger_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/visual/finger.dae"/>
+			</geometry>
+			<material name="LightGrey">
+				<color rgba="0.7 0.7 0.7 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://ur_description/meshes/final_gripper/collision/finger.stl"/>
+			</geometry>
+		</collision>
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0"/>
+			<inertia ixx="0.00008297" ixy="0.000008364" ixz="0.00001782" iyy="0.00006509" iyz="0.000008543" izz="0.00006196"/>
+		</inertial>
+	</link>
+
+
+<!-- GRIPPER END-EFFECTOR -->
+<!--  166.5 mm from ur5_ee tot gripper_ee -->
+	<joint name="gripper_ee_joint" type="fixed">
+		<axis xyz="0 0 0"/>
+		<origin xyz="0.0 0.1665 0.0" rpy="${pi} 0 0"/>
+		<parent link="body_link"/>
+		<child link="gripper_ee_link"/>
+	</joint>
+	<link name="gripper_ee_link">
+	</link>
+
+<!-- Here we define the transmission for the driver_arm_joint -->
+	<transmission name="dynamixel_gear_trans">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="dynamixel_gear_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="dynamixel_gear_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+</robot>

@@ -1,0 +1,2 @@
+geometry_msgs/Pose desired_pose
+std_msgs/String pick_or_place

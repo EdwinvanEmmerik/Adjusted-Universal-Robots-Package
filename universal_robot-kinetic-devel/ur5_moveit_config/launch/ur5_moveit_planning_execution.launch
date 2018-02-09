@@ -1,0 +1,23 @@
+<launch>
+  <arg name="sim" default="false" />
+  <arg name="limited" default="false"/>
+  <arg name="debug" default="false" />
+    
+  <!-- Remap follow_joint_trajectory -->
+  <remap if="$(arg sim)" from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
+  
+  <!-- Launch moveit -->
+  <include file="$(find ur5_moveit_config)/launch/move_group.launch">
+    <arg name="limited" default="$(arg limited)"/>
+    <arg name="debug" default="$(arg debug)" />
+  </include>
+
+  <!-- Load the test workspace environment into the planning scene -->
+  <group if="$(arg sim)">
+    <node name="ur5_sim_workspace_loader" pkg="ur_kinematics" type="ur5_workspace" output="screen"/>
+  </group>
+  <!-- Load the real workspace environment into the planning scene -->
+  <group unless="$(arg sim)">  
+    <node name="ur5_real_workspace_loader" pkg="ur_kinematics" type="ur5_workspace_real" output="screen"/>
+  </group>
+</launch>

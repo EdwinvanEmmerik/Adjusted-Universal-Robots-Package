@@ -1,0 +1,21 @@
+<launch>
+	<!-- Startup ur5 -->
+	<include file="$(find ur_modern_driver)/launch/ur5_bringup.launch">
+	<!--<include file="$(find ur_modern_driver)/launch/ur5_ros_control.launch">-->
+		<arg name="robot_ip" value="192.168.1.102"/>
+	</include>
+	<!-- Startup ur5_moveit_planning_execution.launch with args: limited:=true -->
+	<include file="$(find ur5_moveit_config)/launch/ur5_moveit_planning_execution.launch">
+		<arg name="limited" value="true"/>
+	</include>
+	<!-- Startup moveit_rviz.launch with arg: config:=true -->
+	<include file="$(find ur5_moveit_config)/launch/moveit_rviz.launch">
+		<arg name="config" value="true"/>
+	</include>
+	<!-- Startup the move client and service -->
+	<include file="$(find ur_kinematics)/launch/PAP_client_service.launch"/>
+	<!-- Startup gripper -->
+	<node name="real_gripper_controller" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyACM0"/>
+	</node>
+</launch>
